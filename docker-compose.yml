@@ -1,0 +1,29 @@
+version: "2"
+services:
+  django:
+    container_name: @@PROJECT_NAME@@_django
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: @@PROJECT_NAME@@
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/opt/services/@@PROJECT_NAME@@
+    networks:
+      - nginx_network
+
+  nginx:
+    image: nginx:1.13
+    ports:
+      - 8000:80
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - django
+    networks:
+      - nginx_network
+
+networks:
+  nginx_network:
+    driver: bridge

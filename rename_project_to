@@ -1,0 +1,27 @@
+#!/bin/bash
+
+PROJECT_NAME=$1
+
+declare -a FILES_TO_RENAME=(
+    "config/nginx/conf.d/local.conf"
+    "docker-compose.yml"
+    "docker-entrypoint.sh"
+    "Dockerfile"
+    "manage.py"
+    "project_name/settings.py"
+    "project_name/urls.py"
+    "project_name/wsgi.py"
+
+)
+
+echo "Starting rename of project to ${PROJECT_NAME}..."
+echo "-----------------------------"
+
+for f in "${FILES_TO_RENAME[@]}"; do
+    echo "Renaming ${f}"
+    sed -i -e "s/@@PROJECT_NAME@@/$PROJECT_NAME/g" "$f"
+done
+
+mv project_name $PROJECT_NAME
+
+echo "Project rename complete"
